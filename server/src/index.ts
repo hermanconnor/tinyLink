@@ -2,6 +2,7 @@ import * as dotenv from 'dotenv';
 dotenv.config();
 import express from 'express';
 import mongoose from 'mongoose';
+import cookieParser from 'cookie-parser';
 import cors from 'cors';
 import morgan from 'morgan';
 import 'express-async-errors';
@@ -21,6 +22,7 @@ dbConnect();
 // MIDDLEWARE
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
 app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
