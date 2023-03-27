@@ -7,11 +7,12 @@ import cors from 'cors';
 import morgan from 'morgan';
 import 'express-async-errors';
 
-import dbConnect from './config/db';
-import corsOptions from './config/corsOptions';
-import errorHandler from './middleware/errorHandler';
-import userRoutes from './routes/userRoutes';
-import authRoutes from './routes/authRoutes';
+import dbConnect from './config/db.js';
+import corsOptions from './config/corsOptions.js';
+import errorHandler from './middleware/errorHandler.js';
+import userRoutes from './routes/userRoutes.js';
+import authRoutes from './routes/authRoutes.js';
+import urlRoutes from './routes/urlRoutes.js';
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -29,6 +30,7 @@ app.use(morgan('dev'));
 // ROUTES
 app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/urls', urlRoutes);
 
 // GLOBAL ERROR HANDLER
 app.use(errorHandler);

@@ -2,8 +2,8 @@ import { Request, Response } from 'express';
 import bcrypt from 'bcrypt';
 import jwt, { Secret } from 'jsonwebtoken';
 
-import User from '../models/User';
-import validateLogin from '../helpers/validateLogin';
+import User from '../models/User.js';
+import validateLogin from '../helpers/validateLogin.js';
 
 const MAX_AGE = 7 * 24 * 60 * 60 * 1000;
 
@@ -29,13 +29,13 @@ export const loginUser = async (req: Request, res: Response) => {
   }
 
   const accessToken = jwt.sign(
-    { id: user._id },
+    { userId: user._id },
     process.env.ACCESS_TOKEN_SECRET as Secret,
     { expiresIn: '15m' },
   );
 
   const refreshToken = jwt.sign(
-    { id: user._id },
+    { userId: user._id },
     process.env.REFRESH_TOKEN_SECRET as Secret,
     { expiresIn: '7d' },
   );
@@ -58,5 +58,5 @@ export const logoutUser = async (req: Request, res: Response) => {
 
   res.clearCookie('jwt', { httpOnly: true, sameSite: 'none', secure: true });
 
-  res.json({ message: 'Cookie Cleared' });
+  res.json({ message: 'Loggged Out Successfully' });
 };

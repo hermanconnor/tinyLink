@@ -6,7 +6,7 @@ interface UserInfo {
   password: string;
 }
 
-export default function validateRegister(newUser: UserInfo) {
+export default function validateUser(newUser: UserInfo) {
   const { username, email, password } = newUser;
 
   const schema = z.object({
@@ -21,6 +21,7 @@ export default function validateRegister(newUser: UserInfo) {
       .max(255),
     password: z
       .string({ invalid_type_error: 'Password must be a string' })
+      .nonempty({ message: 'Password is required' })
       .min(6, { message: 'Must be 6 or more characters long' })
       .max(255),
   });
