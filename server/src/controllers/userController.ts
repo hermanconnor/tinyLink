@@ -73,7 +73,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   await user.save();
 
-  res.json('Profile updated successfully');
+  res.status(200).json('Profile updated successfully');
 };
 
 // DELETE USER

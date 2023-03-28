@@ -6,10 +6,14 @@ import {
   deleteUser,
 } from '../controllers/userController.js';
 
+import { getUserLinks } from '../controllers/urlController.js';
+import verifyToken from '../middleware/verifyToken.js';
+
 const router = express.Router();
 
 router.post('/', createUser);
-router.patch('/:id', updateUser);
-router.delete('/:id', deleteUser);
+router.get('/:id', verifyToken, getUserLinks);
+router.patch('/:id', verifyToken, updateUser);
+router.delete('/:id', verifyToken, deleteUser);
 
 export default router;
