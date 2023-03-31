@@ -51,7 +51,7 @@ export const updateUser = async (req: Request, res: Response) => {
 
   if (req.user?.userId.toString() !== req.params.id) {
     res.status(403);
-    throw new Error('Forbidden. User not authorized');
+    throw new Error('Forbidden');
   }
 
   const parsed = validateUser({ username, email, password });

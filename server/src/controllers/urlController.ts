@@ -10,12 +10,29 @@ const BASE_URL = 'http://localhost:5000';
 export const createUrl = async (req: Request, res: Response) => {
   const { longUrl, name } = req.body;
 
+  if (!req.user?.userId) {
+    res.status(401);
+    throw new Error('Unauthorized');
+  }
+
   const parsed = validateUrl({ longUrl });
   if (!parsed.success) {
     return res.status(400).json({ message: parsed.error.format() });
   }
 
-  const urlExists = await Url.findOne({ longUrl }).exec();
+  // const urlExists = await Url.findOne({ longUrl }).lean().exec();
+
+  const originalLink = await Url.findOne({ longUrl }).lean().exec();
+  const userLinks = await Url.find({ user: req.user?.userId }).lean().exec();
+  const urlExists = userLinks.find(
+    (link) => link.longUrl === originalLink?.longUrl,
+  );
+  // const linkExists = await Url.find({ user: req.user?.userId })
+  //   .where('longUrl')
+  //   .equals(longUrl);
+
+  // if (linkExists.length) return res.status(200).json(linkExists);
+
   if (urlExists) return res.status(200).json(urlExists);
 
   const urlCode = nanoid(8);

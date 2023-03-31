@@ -28,8 +28,8 @@ app.use(cors(corsOptions));
 app.use(morgan('dev'));
 
 // ROUTES
-app.use('/api/users', userRoutes);
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 app.use('/api/urls', urlRoutes);
 
 // GLOBAL ERROR HANDLER
