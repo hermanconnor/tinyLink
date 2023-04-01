@@ -20,20 +20,13 @@ export const createUrl = async (req: Request, res: Response) => {
     return res.status(400).json({ message: parsed.error.format() });
   }
 
-  // const urlExists = await Url.findOne({ longUrl }).lean().exec();
+  const linkExists = await Url.find({ user: req.user?.userId })
+    .where('longUrl')
+    .equals(longUrl)
+    .lean()
+    .exec();
 
-  const originalLink = await Url.findOne({ longUrl }).lean().exec();
-  const userLinks = await Url.find({ user: req.user?.userId }).lean().exec();
-  const urlExists = userLinks.find(
-    (link) => link.longUrl === originalLink?.longUrl,
-  );
-  // const linkExists = await Url.find({ user: req.user?.userId })
-  //   .where('longUrl')
-  //   .equals(longUrl);
-
-  // if (linkExists.length) return res.status(200).json(linkExists);
-
-  if (urlExists) return res.status(200).json(urlExists);
+  if (linkExists.length) return res.status(200).json(linkExists);
 
   const urlCode = nanoid(8);
 
